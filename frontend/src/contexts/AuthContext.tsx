@@ -5,12 +5,9 @@ import {
   useState,
 } from 'react';
 
-interface User {
-  token: string | null;
-}
-
 interface AuthContextType {
   token: string | null;
+  isAuthenticated: boolean;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -24,9 +21,7 @@ export function AuthProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [token, setToken] = useState<string | null>(
-    null,
-  );
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
@@ -50,6 +45,7 @@ export function AuthProvider({
     <AuthContext.Provider
       value={{
         token,
+        isAuthenticated: !!token,
         login,
         logout,
       }}
